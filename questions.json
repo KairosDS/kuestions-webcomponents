@@ -1,0 +1,24 @@
+{
+    "questionaireId": 1,
+    "questionaireName": "Javascript",
+    "id": 1,
+    "question": "¿Cuál de las siguientes agrupaciones no es correcta?",
+    "image": "https://dummyimage.com/600x400/d4d4d4/000000",
+    "answers": [
+        {
+            "id": 3,
+            "text": "Node, Grunt, Bower",
+            "image": ""
+        },
+        {
+            "id": 4,
+            "text": "Grunt, Gulp, Broccoli",
+            "image": "https://dummyimage.com/600x400/d4d4d4/000000"
+        },
+        {
+            "id": 5,
+            "text": "Bower, npm, homebrew",
+            "image": ""
+        }
+    ]
+}
