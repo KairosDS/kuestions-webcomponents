@@ -1,12 +1,140 @@
+<!DOCTYPE html>
 <html>
     <template id="js-question-block">
-        <link rel="stylesheet" href="components/question-block/question-block.css">
+        <style>
+            .question_block {
+                font-family: 'Open Sans', sans-serif;
+                padding: 20px;
+                text-align: center;
+            }
+
+            h2 {
+                font-size: 1.875em;
+                color: #FF7900;
+            }
+
+            h3 {
+                font-size: 1.5em;
+            }
+
+            img {
+                display: block;
+                margin: 0 auto 20px;
+                width: 100%;
+            }
+
+            label {
+                display: block;
+                font-size: 1.200em;
+                margin-bottom: 10px;
+            }
+
+            label input {
+                margin-right: 10px;
+            }
+
+            button {
+                background-color: #FF7900;
+                color: #ffffff;
+                font-size: 1.275em;
+                text-transform: uppercase;
+                margin: 20px auto;
+                padding: 10px 40px;
+                border: 0;
+            }
+
+            .radio_container {
+                text-align: left;
+            }
+            .radio_container img {
+                margin: 10px 0;
+            }
+
+            .radio_container p {
+                color: red;
+                font-size: 1em;
+            }
+        </style>
         <div class="question_block">
-            <h2></h2>
             <header></header>
             <div class="radio_container"></div>
             <button class="btn">Send</button>
         </div>
     </template>
-    <script type="text/javascript" src="question-block.js"></script>
+
+    <script type="text/javascript">
+        class QuestionBlock extends HTMLElement {
+        	constructor() {
+        		super();
+        		this.importDocument = document.currentScript.ownerDocument;
+        	}
+
+            static get observedAttributes() {
+        		return ['title', 'image', 'question', 'options'];
+        	}
+
+        	connectedCallback() {
+                console.log('connectedCallback');
+        		let shadowRoot = this.attachShadow({ mode: 'open' });
+        		const questionBlock = this.importDocument.querySelector(
+        			'#js-question-block'
+        		);
+        		const instance = questionBlock.content.cloneNode(true);
+        		shadowRoot.appendChild(instance);
+
+        		const button = shadowRoot.querySelector('button');
+        		button.addEventListener('click', () => {
+        			this.sendAnswer();
+        		});
+        	}
+
+        	attributeChangedCallback(attr, oldValue, newValue) {
+        		// TODO Put here the changes for the attributes
+        		console.log('attribute changed');
+        		console.log(attr, oldValue, newValue);
+
+                /*
+                title
+                question
+                image
+                */
+
+                const header = this.shadowRoot.querySelector('header');
+
+                if (attr === 'title') {
+                    // TODO h2 is required
+                    let title;
+                    if (!this.shadowRoot.querySelector('.question_block h2')) {
+                        title = document.createElement('h2');
+                        this.shadowRoot.querySelector('.question_block').insertBefore(title, header);
+                    } else {
+                        title = this.shadowRoot.querySelector('.question_block h2');
+                    }
+                    title.textContent = newValue;
+                }
+
+                if (attr === 'question') {
+                    this.shadowRoot.querySelector('h3').textContent = newValue;
+                }
+
+                if (attr === 'image') {
+                    if (newValue !== null && this.shadowRoot.querySelector('header img')) {
+                        this.shadowRoot.querySelector('header img').setAttribute('src', newValue);
+                    }
+
+                    if (oldValue === null && newValue !== null) {
+                        this.shadowRoot.querySelector('header').createElement('img');
+                    } else if (oldValue !== null && newValue === null) {
+                        this.shadowRoot.querySelector('header img').remove();
+                    }
+                }
+
+                if (attr === 'options') {
+                    this.shadowRoot.querySelector('.radio_container');
+                }
+        	}
+        }
+
+        window.customElements.define('question-block', QuestionBlock);
+    </script>
 </html>
