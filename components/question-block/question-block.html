@@ -157,7 +157,7 @@
                 title.textContent = value;
             }
 
-            renderQuestion(newValue, oldValue) {
+            renderQuestion(newValue, oldValue = null) {
                 if (newValue !== null) {
                     let question;
 
@@ -178,7 +178,7 @@
                 }
             }
 
-            renderImage(newValue, oldValue) {
+            renderImage(newValue, oldValue = null) {
                 if (newValue !== null) {
                     let image;
 
@@ -195,7 +195,7 @@
                 }
             }
 
-            renderOptions(newValue, oldValue) {
+            renderOptions(newValue, oldValue = null) {
                 if (newValue !== null) {
                     const radios = JSON.parse(newValue)
 
