@@ -6,9 +6,9 @@ const bodyParser = require("body-parser");
 app.use(cors());
 
 app.use(
-   bodyParser.urlencoded({
-       extended: true
-   })
+    bodyParser.urlencoded({
+        extended: true
+    })
 );
 
 app.use(bodyParser.json());
@@ -20,11 +20,13 @@ app.get("/question", (req, res) => {
 app.post("/answer", (req, res) => {
     const body = req["body"];
     var idAnswer = body["idAnswer"];
+    var result;
     if (idAnswer == 3) {
-        return res.status(200).json({ result: "OK" });
+        result = "OK";
     } else {
-        return res.status(200).json({ result: "KO" });
+        result = "KO";
     }
+    res.status(200).json(question);
 });
 
 app.listen(4000, () => {

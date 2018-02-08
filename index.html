@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -8,8 +9,19 @@
     <link rel="import" href="components/question-data/question-data.html">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 </head>
+
 <body>
     <question-block></question-block>
-    <question-data url="" method="" params="" on-response=""></question-data>
+    <question-data url="http://localhost:4000/question" method="GET" params=""></question-data>
 </body>
+<script>
+    document.addEventListener('response', (data) => {
+        var questionBlock = document.querySelector('question-block');
+        questionBlock.setAttribute('title', data.detail.questionaireName);
+        questionBlock.setAttribute('question', data.detail.question);
+        questionBlock.setAttribute('image', data.detail.image);
+        questionBlock.setAttribute('options', data.detail.answers);
+    });
+</script>
+
 </html>
