@@ -55,84 +55,216 @@
                 font-size: 1em;
             }
         </style>
+
         <div class="question_block">
-            <header></header>
+             <header></header>
             <div class="radio_container"></div>
             <button class="btn">Send</button>
         </div>
+
     </template>
 
     <script type="text/javascript">
         class QuestionBlock extends HTMLElement {
-        	constructor() {
-        		super();
-        		this.importDocument = document.currentScript.ownerDocument;
-        	}
-
             static get observedAttributes() {
-        		return ['title', 'image', 'question', 'options'];
-        	}
+                return ['title', 'image', 'question', 'options'];
+            }
 
-        	connectedCallback() {
-                console.log('connectedCallback');
-        		let shadowRoot = this.attachShadow({ mode: 'open' });
-        		const questionBlock = this.importDocument.querySelector(
-        			'#js-question-block'
-        		);
-        		const instance = questionBlock.content.cloneNode(true);
-        		shadowRoot.appendChild(instance);
+            constructor() {
+                super();
+                this.importDocument = document.currentScript.ownerDocument;
+            }
 
-        		const button = shadowRoot.querySelector('button');
-        		button.addEventListener('click', () => {
-        			this.sendAnswer();
-        		});
-        	}
+            connectedCallback() {
+                let shadowRoot = this.attachShadow({ mode: 'open' });
+                const questionBlock = this.importDocument.querySelector(
+                    '#js-question-block'
+                );
 
-        	attributeChangedCallback(attr, oldValue, newValue) {
-        		// TODO Put here the changes for the attributes
-        		console.log('attribute changed');
-        		console.log(attr, oldValue, newValue);
+                const instance = questionBlock.content.cloneNode(true);
+                shadowRoot.appendChild(instance);
 
-                /*
-                title
-                question
-                image
-                */
+                const button = shadowRoot.querySelector('button');
 
-                const header = this.shadowRoot.querySelector('header');
+                button.addEventListener('click', this.handleClick.bind(this));
 
+                this.render();
+            }
+
+            handleClick(e) {
+                const elemetChecked = this.shadowRoot.querySelector(
+                    'input[name="option"]:checked'
+                );
+
+                if (elemetChecked) {
+                    // TODO Error not value define
+                }
+
+                this.dispatchEvent(new CustomEvent('question-block-response', {detail: {
+                    'idQuestion': this.idQuestion,
+                    'idResponse': elemetChecked.value
+                }}));
+            }
+
+            render(){
+                this.renderTitle(this.title);
+                this.renderQuestion(this.question);
+                this.renderImage(this.image);
+                this.renderOptions(this.options);
+            }
+
+            disconnectedCallback() {
+                // TODO Remove zombie events
+            }
+
+            attributeChangedCallback(attr, oldValue, newValue) {
+                // TODO Put here the changes for the attributes
+
+                if (!this.shadowRoot) {
+                    return null;
+                }
+
+                // Title
                 if (attr === 'title') {
-                    // TODO h2 is required
-                    let title;
-                    if (!this.shadowRoot.querySelector('.question_block h2')) {
-                        title = document.createElement('h2');
-                        this.shadowRoot.querySelector('.question_block').insertBefore(title, header);
-                    } else {
-                        title = this.shadowRoot.querySelector('.question_block h2');
-                    }
-                    title.textContent = newValue;
+                    this.renderTitle(newValue);
                 }
 
+                // Question
                 if (attr === 'question') {
-                    this.shadowRoot.querySelector('h3').textContent = newValue;
+                    this.renderQuestion(newValue, oldValue);
                 }
 
+                // Image
                 if (attr === 'image') {
-                    if (newValue !== null && this.shadowRoot.querySelector('header img')) {
-                        this.shadowRoot.querySelector('header img').setAttribute('src', newValue);
-                    }
-
-                    if (oldValue === null && newValue !== null) {
-                        this.shadowRoot.querySelector('header').createElement('img');
-                    } else if (oldValue !== null && newValue === null) {
-                        this.shadowRoot.querySelector('header img').remove();
-                    }
+                    this.renderImage(newValue, oldValue);
                 }
 
+                // Options
                 if (attr === 'options') {
-                    this.shadowRoot.querySelector('.radio_container');
+                    this.renderOptions(newValue, oldValue);
                 }
-        	}
+            }
+
+            renderTitle(value){
+                let title;
+
+                if (!this.shadowRoot.querySelector('.question_block h2')) {
+                    title = document.createElement('h2');
+                    this.shadowRoot.querySelector('.question_block').insertBefore(title, this.shadowRoot.querySelector('header'));
+                } else {
+                    title = this.shadowRoot.querySelector('.question_block h2');
+                }
+                title.textContent = value;
+            }
+
+            renderQuestion(newValue, oldValue) {
+                if (newValue !== null) {
+                    let question;
+
+                    if (this.shadowRoot.querySelector('header h3')) {
+                        question = this.shadowRoot.querySelector('header h3');
+                    } else if (this.shadowRoot.querySelector('header img') && this.shadowRoot.querySelector('header h3') === null) {
+                        question = document.createElement('h3');
+                        this.shadowRoot.querySelector('header').insertBefore(h3, this.shadowRoot.querySelector('header img'));
+                    } else {
+                        question = document.createElement('h3');
+                        this.shadowRoot.querySelector('header').appendChild(question);
+                    }
+
+                    question.textContent = newValue;
+
+                } else if (oldValue !== null) {
+                    this.shadowRoot.querySelector('header h3').remove();
+                }
+            }
+
+            renderImage(newValue, oldValue) {
+                if (newValue !== null) {
+                    let image;
+
+                    if (this.shadowRoot.querySelector('header img')) {
+                        image = this.shadowRoot.querySelector('header img');
+                    } else {
+                        image = document.createElement('img');
+                        this.shadowRoot.querySelector('header').appendChild(image);
+                    }
+
+                    image.setAttribute('src', newValue);
+                } else if (oldValue !== null) {
+                    this.shadowRoot.querySelector('header img').remove();
+                }
+            }
+
+            renderOptions(newValue, oldValue) {
+                if (newValue !== null) {
+                    const radios = JSON.parse(newValue)
+
+                    for (let i in radios) {
+                        const label = document.createElement('label');
+                        const oneRadio = document.createElement('input');
+
+                        label.appendChild(oneRadio);
+                        oneRadio.setAttribute('type', 'radio');
+                        oneRadio.setAttribute('value', radios[i].id);
+                        oneRadio.setAttribute('name', 'option');
+
+                        if (radios[i].text) {
+                            label.innerHTML += radios[i].text;
+                        }
+
+                        if (radios[i].image) {
+                            const image = document.createElement('img');
+                            image.setAttribute('src', radios[i].image);
+                            label.appendChild(image);
+                        }
+
+                        this.shadowRoot.querySelector('.radio_container').appendChild(label);
+                    }
+                } else if (oldValue !== null) {
+                    this.shadowRoot.querySelector('.radio_container').innerHTML = '';
+                }
+            }
+
+
+            get title() {
+                return this.getAttribute('title');
+            }
+
+            set title(val) {
+                this.setAttribute('title', val);
+            }
+
+            get idQuestion() {
+                return this.getAttribute('idQuestion');
+            }
+
+            set idQuestion(val) {
+                this.setAttribute('idQuestion', val);
+            }
+
+            get question() {
+                return this.getAttribute('question');
+            }
+
+            set question(val) {
+                this.setAttribute('question', val);
+            }
+
+            get image() {
+                return this.getAttribute('image');
+            }
+
+            set image(val) {
+                this.setAttribute('image', val);
+            }
+
+            get options() {
+                return this.getAttribute('options');
+            }
+
+            set options(val) {
+                this.setAttribute('options', val);
+            }
         }
 
         window.customElements.define('question-block', QuestionBlock);
