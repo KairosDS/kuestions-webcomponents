@@ -1,4 +1,7 @@
 class QuestionData extends HTMLElement {
+    static get observedAttributes() {
+        return ["url", "method", "params"];
+    }
     constructor() {
         super();
         this.importDocument = document.currentScript.ownerDocument;
@@ -9,15 +12,16 @@ class QuestionData extends HTMLElement {
     }
 
     attributeChangedCallback(attribute, oldValue, newValue, domain) {
-        this.callServer();
+        if (oldValue !== null) {
+            this.callServer();
+        }
     }
 
     callServer() {
-        var url = this.getAttribute("url");
         var method = this.getAttribute("method");
+        var url = this.getAttribute("url");
         var params = this.getAttribute("params");
-
-        if (url && method) {
+        if (url && (method === "GET" || (method === "POST" && params))) {
             let xhr = new XMLHttpRequest();
             xhr.open(method, url, true);
             xhr.responseType = "json";
