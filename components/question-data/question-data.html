@@ -30,7 +30,7 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         this.dispatchEvent(
-                            new CustomEvent("response", {
+                            new CustomEvent("question-data-response", {
                                 detail: xhr.response
                             })
                         );
