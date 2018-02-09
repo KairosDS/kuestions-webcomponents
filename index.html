@@ -29,7 +29,7 @@
         questionData.setAttribute('params', '');
     }
 
-    questionData.addEventListener('response', (data) => {
+    questionData.addEventListener('question-data-response', (data) => {
         questionBlock.setAttribute('idQuestion', data.detail.id);
         questionBlock.setAttribute('title', data.detail.questionaireName);
         questionBlock.setAttribute('question', data.detail.question);
@@ -39,9 +39,7 @@
     });
 
     questionBlock.addEventListener('question-block-response', (data) => {
-        questionData.setAttribute('url', 'http://localhost:4000/answer');
         questionData.setAttribute('params', JSON.stringify(data.detail));
-        questionData.setAttribute('method', 'POST');
     })
 
 </script>
