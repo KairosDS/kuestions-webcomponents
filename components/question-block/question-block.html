@@ -73,7 +73,8 @@
             constructor() {
                 super();
                 this.importDocument = document.currentScript.ownerDocument;
-                 this.visibility(this.display);
+                this.handleClick = this.handleClick.bind(this);
+                this.visibility(this.display);
             }
 
             connectedCallback() {
@@ -87,7 +88,7 @@
 
                 const button = shadowRoot.querySelector('button');
 
-                button.addEventListener('click', this.handleClick.bind(this));
+                button.addEventListener('click', this.handleClick);
 
                 this.render();
             }
@@ -115,7 +116,8 @@
             }
 
             disconnectedCallback() {
-                // TODO Remove zombie events
+               const button = shadowRoot.querySelector('button');
+               button.removeEventListener('click', this.handleClick);
             }
 
             attributeChangedCallback(attr, oldValue, newValue) {
