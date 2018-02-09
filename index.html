@@ -12,12 +12,12 @@
 
 <body>
     <question-block></question-block>
-    <question-data url="http://localhost:4000/question" method="GET" params=""></question-data>
+    <question-data params=""></question-data>
 </body>
 <script>
     var questionBlock = document.querySelector('question-block');
     var questionData = document.querySelector('question-data');
-    document.addEventListener('response', (data) => {
+    questionData.addEventListener('response', (data) => {
         questionBlock.setAttribute('idQuestion', data.detail.id);
         questionBlock.setAttribute('title', data.detail.questionaireName);
         questionBlock.setAttribute('question', data.detail.question);
@@ -25,9 +25,7 @@
         questionBlock.setAttribute('options', JSON.stringify(data.detail.answers));
     });
     questionBlock.addEventListener('question-block-response', (data) => {
-        questionData.setAttribute('url', 'http://localhost:4000/answer');
         questionData.setAttribute('params', JSON.stringify(data.detail));
-        questionData.setAttribute('method', 'POST');
     })
 </script>
 
