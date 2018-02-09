@@ -67,7 +67,7 @@
     <script type="text/javascript">
         class QuestionBlock extends HTMLElement {
             static get observedAttributes() {
-                return ['title', 'image', 'question', 'options'];
+                return ['title', 'image', 'question', 'options', 'display'];
             }
 
             constructor() {
@@ -107,6 +107,7 @@
             }
 
             render(){
+                this.visibility(this.display);
                 this.renderTitle(this.title);
                 this.renderQuestion(this.question);
                 this.renderImage(this.image);
@@ -142,6 +143,11 @@
                 // Options
                 if (attr === 'options') {
                     this.renderOptions(newValue, oldValue);
+                }
+
+                //Display
+                if (attr === 'display') {
+                    this.visibility(newValue);
                 }
             }
 
@@ -225,6 +231,10 @@
                 }
             }
 
+            visibility(newValue) {
+                this.style.display= newValue;
+            }
+
 
             get title() {
                 return this.getAttribute('title');
@@ -264,6 +274,14 @@
 
             set options(val) {
                 this.setAttribute('options', val);
+            }
+
+             get display() {
+                return this.getAttribute('display');
+            }
+
+            set display(val) {
+                this.setAttribute('display', val);
             }
         }
 

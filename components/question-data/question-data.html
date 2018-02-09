@@ -32,7 +32,7 @@
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            document.dispatchEvent(
+                            this.dispatchEvent(
                                 new CustomEvent("response", {
                                     detail: xhr.response
                                 })
