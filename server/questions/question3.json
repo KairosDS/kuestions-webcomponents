@@ -1,0 +1,24 @@
+{
+    "questionaireId": 1,
+    "questionaireName": "Javascript",
+    "id": 3,
+    "question": "¿Cuál es la función del atributo placeholder en los inputs?",
+    "image": "",
+    "answers": [
+        {
+            "id": 9,
+            "text": "Cuando tiene title porque es redundante",
+            "image": ""
+        },
+        {
+            "id": 10,
+            "text": "Cuando tiene función decorativa",
+            "image": ""
+        },
+        {
+            "id": 11,
+            "text": "Cuando se utiliza como icono",
+            "image": ""
+        }
+    ]
+}

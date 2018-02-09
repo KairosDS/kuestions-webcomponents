@@ -1,0 +1,26 @@
+{
+    "questionaireId": 1,
+    "questionaireName": "Javascript",
+    "id": 2,
+    "question": "¿Cuál es la función del atributo placeholder en los inputs?",
+    "image": "",
+    "answers": [
+        {
+            "id": 6,
+            "text":
+                "Sirve como ejemplo o ayuda para rellenar un campo de texto",
+            "image": ""
+        },
+        {
+            "id": 7,
+            "text": "Sustituye al label",
+            "image": ""
+        },
+        {
+            "id": 8,
+            "text":
+                "Proporciona información adicional a los lectores de pantalla",
+            "image": ""
+        }
+    ]
+}

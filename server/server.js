@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
-const question = require("../questions.json");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const fs = require("fs");
+
 app.use(cors());
 
 app.use(
@@ -14,19 +15,21 @@ app.use(
 app.use(bodyParser.json());
 
 app.get("/question", (req, res) => {
+    var question = require("./questions/question1.json");
     res.status(200).json(question);
 });
 
 app.post("/answer", (req, res) => {
     const body = req["body"];
     var idAnswer = body["idAnswer"];
-    var result;
-    if (idAnswer == 3) {
-        result = "OK";
+    var idQuestion = parseInt(body["idQuestion"]);
+    var idNext = idQuestion + 1;
+    if (fs.existsSync("./questions/question" + idNext + ".json")) {
+        var question = require("./questions/question" + idNext + ".json");
+        res.status(200).json(question);
     } else {
-        result = "KO";
+        res.status(200).json({ completed: true });
     }
-    res.status(200).json(question);
 });
 
 app.listen(4000, () => {
