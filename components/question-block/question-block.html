@@ -196,6 +196,8 @@
             }
 
             renderOptions(newValue, oldValue = null) {
+                this.shadowRoot.querySelector('.radio_container').innerHTML = '';
+
                 if (newValue !== null) {
                     const radios = JSON.parse(newValue)
 
@@ -220,8 +222,6 @@
 
                         this.shadowRoot.querySelector('.radio_container').appendChild(label);
                     }
-                } else if (oldValue !== null) {
-                    this.shadowRoot.querySelector('.radio_container').innerHTML = '';
                 }
             }
 
