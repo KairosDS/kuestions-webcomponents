@@ -94,18 +94,19 @@
             }
 
             handleClick(e) {
-                const elemetChecked = this.shadowRoot.querySelector(
-                    'input[name="option"]:checked'
-                );
-
-                if (elemetChecked) {
-                    // TODO Error not value define
+                
+                const elemetChecked = this.shadowRoot.querySelector('input[name="option"]:checked');
+                
+                if (elemetChecked === null) {
+                    const error = document.createElement('p');
+                    error.textContent = 'Selecciona una respuesta';
+                    this.shadowRoot.querySelector('.radio_container').appendChild(error);
+                } else {
+                     this.dispatchEvent(new CustomEvent('question-block-response', {detail: {
+                        'idQuestion': this.idQuestion,
+                        'idResponse': elemetChecked.value
+                    }}));
                 }
-
-                this.dispatchEvent(new CustomEvent('question-block-response', {detail: {
-                    'idQuestion': this.idQuestion,
-                    'idResponse': elemetChecked.value
-                }}));
             }
 
             render(){
