@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Webcomponent</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="import" href="components/question-block/question-block.html">
     <link rel="import" href="components/question-data/question-data.html">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -19,12 +20,15 @@
     <question-data></question-data>
 </body>
 <script>
+
     var questionBlock = document.querySelector('question-block');
     var questionData = document.querySelector('question-data');
+
     function startTest(){
         document.querySelector('#landing').style.display = 'none';
         questionData.setAttribute('params', '');
     }
+
     questionData.addEventListener('response', (data) => {
         questionBlock.setAttribute('idQuestion', data.detail.id);
         questionBlock.setAttribute('title', data.detail.questionaireName);
@@ -33,11 +37,13 @@
         questionBlock.setAttribute('options', JSON.stringify(data.detail.answers));
         questionBlock.setAttribute('display', 'block');
     });
+
     questionBlock.addEventListener('question-block-response', (data) => {
         questionData.setAttribute('url', 'http://localhost:4000/answer');
         questionData.setAttribute('params', JSON.stringify(data.detail));
         questionData.setAttribute('method', 'POST');
     })
+
 </script>
 
 </html>

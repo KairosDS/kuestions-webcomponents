@@ -1,0 +1,14 @@
+ #landing {
+    font-family: 'Open Sans', sans-serif;
+    padding: 20px;
+    text-align: center;
+}
+#landing button {
+    background-color: #FF7900;
+    color: #ffffff;
+    font-size: 1.275em;
+    text-transform: uppercase;
+    margin: 20px auto;
+    padding: 10px 40px;
+    border: 0;
+}

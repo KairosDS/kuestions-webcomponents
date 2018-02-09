@@ -73,6 +73,7 @@
             constructor() {
                 super();
                 this.importDocument = document.currentScript.ownerDocument;
+                 this.visibility(this.display);
             }
 
             connectedCallback() {
@@ -107,7 +108,6 @@
             }
 
             render(){
-                this.visibility(this.display);
                 this.renderTitle(this.title);
                 this.renderQuestion(this.question);
                 this.renderImage(this.image);
@@ -202,6 +202,8 @@
             }
 
             renderOptions(newValue, oldValue = null) {
+                this.shadowRoot.querySelector('.radio_container').innerHTML = '';
+
                 if (newValue !== null) {
                     const radios = JSON.parse(newValue)
 
@@ -226,13 +228,11 @@
 
                         this.shadowRoot.querySelector('.radio_container').appendChild(label);
                     }
-                } else if (oldValue !== null) {
-                    this.shadowRoot.querySelector('.radio_container').innerHTML = '';
                 }
             }
 
             visibility(newValue) {
-                this.style.display= newValue;
+                this.style.display = newValue;
             }
 
 
