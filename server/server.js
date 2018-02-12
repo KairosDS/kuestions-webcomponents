@@ -24,7 +24,7 @@ app.post("/answer", (req, res) => {
     var idAnswer = body["idAnswer"];
     var idQuestion = parseInt(body["idQuestion"]);
     var idNext = idQuestion + 1;
-    if (fs.existsSync("./questions/question" + idNext + ".json")) {
+    if (fs.existsSync(__dirname + "/questions/question" + idNext + ".json")) {
         var question = require("./questions/question" + idNext + ".json");
         res.status(200).json(question);
     } else {
